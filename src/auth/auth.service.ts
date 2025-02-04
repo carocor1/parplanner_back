@@ -28,24 +28,18 @@ export class AuthService {
         contraseña: hashPassword,
       });
       await this.usuariosRepository.save(user);
-      return this.generateToken(user);
+      return await this.generateToken(user);
     }
   }
 
-  async validateUser(
-    email: string,
-    validateContraseña: string,
-  ): Promise<{ access_token: string } | null> {
-    console.log('validando usuario');
+  async validateUser(email: string, password: string): Promise<Usuario | null> {
     const user = await this.usuariosRepository.findOne({ where: { email } });
     if (
       user &&
-      (await this.usuarioService.validatePassword(
-        validateContraseña,
-        user.contraseña,
-      ))
+      user.contraseña &&
+      (await this.usuarioService.validatePassword(password, user.contraseña))
     ) {
-      return this.generateToken(user);
+      return user;
     }
     return null;
   }
