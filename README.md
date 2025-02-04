@@ -6,6 +6,7 @@
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+   <p align="center">Proyecto para la materia de seminario integrador en la cual se demuestran los conocimientos adquiridos en la carrera, principalmente, referidos al desarrollo de aplicaciones. Para trabajar, se utilizó la erramiento de NestJS, un poderoso framework de trabajo ampliamente utilizado para la construcción de backends. </p>p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
