@@ -6,37 +6,67 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { GastosService } from './gastos.service';
 import { CreateGastoDto } from './dto/create-gasto.dto';
 import { UpdateGastoDto } from './dto/update-gasto.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { EsCreadorOParticipeGuard } from 'src/auth/guards/esCreadorOParticipe.guard';
+import { EsCreadorGuard } from 'src/auth/guards/esCreador.guard';
+import { ProponerParticionDto } from './dto/proponer-particion.dto';
 
 @Controller('gastos')
 export class GastosController {
   constructor(private readonly gastosService: GastosService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createGastoDto: CreateGastoDto) {
-    return this.gastosService.create(createGastoDto);
+  async create(@Body() createGastoDto: CreateGastoDto, @Req() req) {
+    return await this.gastosService.create(createGastoDto, req.user.userId);
   }
 
+  /*
   @Get()
   findAll() {
     return this.gastosService.findAll();
   }
+    */
 
+  @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuard)
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.gastosService.findOne(id);
+  async findOne(@Param('id') id: number) {
+    return await this.gastosService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard, EsCreadorGuard)
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateGastoDto: UpdateGastoDto) {
-    return this.gastosService.update(id, updateGastoDto);
+  async update(
+    @Param('id') id: number,
+    @Body() updateGastoDto: UpdateGastoDto,
+  ) {
+    return await this.gastosService.update(id, updateGastoDto);
   }
 
+  @UseGuards(JwtAuthGuard, EsCreadorGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.gastosService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.gastosService.remove(id);
+  }
+
+  @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuard)
+  @Post('propuesta/:id')
+  async proponerParticion(
+    @Param('id') id: number,
+    @Body() proponerParticionDto: ProponerParticionDto,
+  ) {
+    return await this.gastosService.proponerParticion(id, proponerParticionDto);
+  }
+
+  @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuard)
+  @Get()
+  async listarGastosCompartidos(@Req() req) {
+    return await this.gastosService.listarGastosCompartidos(req.user.userId);
   }
 }

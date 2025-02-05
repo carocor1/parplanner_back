@@ -39,5 +39,5 @@ export class CreateGastoDto {
   categoria: string;
 
   @IsNumber()
-  usuario_creador: number;
+  usuario_participe: number;
 }

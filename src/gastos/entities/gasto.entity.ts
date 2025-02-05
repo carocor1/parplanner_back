@@ -1,5 +1,6 @@
 import { Categoria } from 'src/categorias/entities/categoria.entity';
 import { Estado } from 'src/estados/entities/estado.entity';
+import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -45,8 +46,9 @@ export class Gasto {
   })
   estado: Estado;
 
-  /*
-  @ManyToOne(() => Usuario, (usuario) => usuario.id)
+  @ManyToOne(() => Usuario, (usuario) => usuario.id, { eager: true })
   usuario_creador: Usuario;
-  */
+
+  @ManyToOne(() => Usuario, (usuario) => usuario.id, { eager: true })
+  usuario_participe: Usuario;
 }
