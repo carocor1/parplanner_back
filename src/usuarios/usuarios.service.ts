@@ -32,4 +32,12 @@ export class UsuariosService {
       return false;
     }
   }
+
+  async findOne(id: number) {
+    const usuario = await this.usuariosRepository.findOneBy({ id });
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+    return usuario;
+  }
 }
