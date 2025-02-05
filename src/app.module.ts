@@ -8,10 +8,12 @@ import { CategoriasModule } from './categorias/categorias.module';
 import { EstadosModule } from './estados/estados.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
+import { HijosModule } from './hijos/hijos.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     GastosModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -27,6 +29,8 @@ import { AuthModule } from './auth/auth.module';
     EstadosModule,
     UsuariosModule,
     AuthModule,
+    HijosModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateHijoDto } from './dto/create-hijo.dto';
 import { UpdateHijoDto } from './dto/update-hijo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,8 +10,9 @@ import { Repository } from 'typeorm';
 import { Hijo } from './entities/hijo.entity';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import { v4 as uuidv4 } from 'uuid';
-import { VinculacionHijoDto } from './dto/vinculacion-hijo.dto';
+import { EnviarVinculoHijoDto } from './dto/enviarvinculo-hijo.dto';
 import { MailService } from 'src/mail/mail.service';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
 
 @Injectable()
 export class HijosService {
@@ -18,33 +23,71 @@ export class HijosService {
     @InjectRepository(Usuario)
     private readonly usuariosRepository: Repository<Usuario>,
 
+    private readonly usuariosService: UsuariosService,
+
     private readonly mailService: MailService,
   ) {}
 
-  async create(createHijoDto: CreateHijoDto) {
-    const progenitor = await this.usuariosRepository.findOneBy({
-      id: createHijoDto.progenitor_creador_id,
-    });
-    if (!progenitor) {
-      throw new BadRequestException('Progenitor no encontrado');
+  async create(createHijoDto: CreateHijoDto, progenitor_creador_id: number) {
+    const progenitor = await this.usuariosService.findOne(
+      progenitor_creador_id,
+    );
+    if (progenitor.hijo !== null) {
+      throw new BadRequestException('Ya tienes un hijo asociado');
     }
     const progenitores = [progenitor];
     const hijo = this.hijosRepository.create({
       ...createHijoDto,
       progenitores,
     });
+    console.log('progenitor creador', progenitor);
     return await this.hijosRepository.save(hijo);
   }
 
-  //crea y envía un código de vinculación al hijo
+  //VER EL TEMA DEL progenitorCreador_id
   async enviarCodigoVinculacionProgenitor(
-    vinculacionHijoDto: VinculacionHijoDto,
+    enviarVinculoHijoDto: EnviarVinculoHijoDto,
+    progenitorCreador_id: number,
   ) {
+    const progenitor_creador =
+      await this.usuariosService.findOne(progenitorCreador_id);
+    const hijo = progenitor_creador.hijo;
+    if (!hijo) {
+      throw new Error('No existe hijo');
+    }
     const codigoInvitacion = uuidv4().substring(0, 6).toUpperCase();
+    hijo.codigoInvitacion = codigoInvitacion;
+    hijo.codigoExpiracion = new Date(Date.now() + 15 * 60 * 1000);
+    await this.hijosRepository.save(hijo);
     await this.mailService.enviarCodigoVinculacionProgenitor(
-      vinculacionHijoDto.email_progenitor, // Correo del progenitor2
+      enviarVinculoHijoDto.email_progenitor,
       codigoInvitacion,
     );
+  }
+
+  async vincularHijo(id: number, codigo: string) {
+    const hijo = await this.hijosRepository.findOneBy({
+      codigoInvitacion: codigo,
+    });
+    if (!hijo) {
+      throw new BadRequestException('Hijo no encontrado');
+    }
+    console.log('hijo encontrado:', hijo);
+    if (hijo.codigoExpiracion < new Date()) {
+      throw new BadRequestException('Código expirado');
+    }
+    const progenitor = await this.usuariosService.findOne(id);
+    console.log('progenitor  a asociar:', progenitor);
+    if (progenitor.hijo) {
+      throw new ForbiddenException('Ya te encuentras vinculado a otro hijo');
+    }
+    progenitor.hijo = hijo;
+    await this.usuariosRepository.save(progenitor);
+    hijo.codigoInvitacion = null;
+    hijo.codigoExpiracion = null;
+    await this.hijosRepository.save(hijo);
+    console.log('hijo vinculado: ', hijo);
+    return hijo;
   }
 
   async findAll() {
@@ -52,7 +95,11 @@ export class HijosService {
   }
 
   async findOne(id: number) {
-    return this.hijosRepository.findOneBy({ id });
+    const hijo = await this.hijosRepository.findOneBy({ id });
+    if (!hijo) {
+      throw new BadRequestException('Hijo no encontrado');
+    }
+    return hijo;
   }
 
   //COMPLETAR ACTUALIZACIÓN

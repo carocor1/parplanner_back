@@ -33,8 +33,14 @@ export class Hijo {
   @Column()
   sexo: string;
 
-  @OneToMany(() => Usuario, (usuario) => usuario.hijo, { nullable: false })
+  @OneToMany(() => Usuario, (usuario) => usuario.hijo, { eager: true })
   progenitores: Usuario[];
+
+  @Column({ nullable: true })
+  codigoInvitacion: string;
+
+  @Column({ nullable: true })
+  codigoExpiracion: Date;
 
   @DeleteDateColumn()
   fechaEliminacion: Date;

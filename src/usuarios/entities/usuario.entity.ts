@@ -1,7 +1,10 @@
+import { Hijo } from 'src/hijos/entities/hijo.entity';
 import {
   Column,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -48,4 +51,8 @@ export class Usuario {
 
   @Column({ nullable: true })
   googleId: string;
+
+  @ManyToOne(() => Hijo, (hijo) => hijo.progenitores)
+  @JoinColumn({ name: 'hijo_id' })
+  hijo: Hijo;
 }

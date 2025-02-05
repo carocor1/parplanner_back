@@ -27,4 +27,11 @@ export class AuthController {
   async googleAuthRedirect(@Req() req) {
     return await this.authService.validateOrCreateUserFromGoogle(req.user);
   }
+
+  @Get('protected')
+  @UseGuards(AuthGuard('jwt')) // Protege la ruta con JWT
+  getProtectedData(@Req() req) {
+    console.log('Usuario autenticado:', req.user); // Debug
+    return { message: 'Esta es una ruta protegida', user: req.user };
+  }
 }

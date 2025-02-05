@@ -25,7 +25,4 @@ export class CreateHijoDto {
 
   @IsString()
   sexo: string;
-
-  @IsNumber()
-  progenitor_creador_id: number;
 }
