@@ -4,16 +4,12 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { Gasto } from '../../gastos/entities/gasto.entity';
 import { GastosService } from '../../gastos/gastos.service';
 
 @Injectable()
 export class EsCreadorOParticipeGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private gastosService: GastosService,
-  ) {}
+  constructor(private gastosService: GastosService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
