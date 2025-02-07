@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateHijoDto } from './dto/create-hijo.dto';
 import { UpdateHijoDto } from './dto/update-hijo.dto';
@@ -40,11 +41,9 @@ export class HijosService {
       ...createHijoDto,
       progenitores,
     });
-    console.log('progenitor creador', progenitor);
     return await this.hijosRepository.save(hijo);
   }
 
-  //VER EL TEMA DEL progenitorCreador_id
   async enviarCodigoVinculacionProgenitor(
     enviarVinculoHijoDto: EnviarVinculoHijoDto,
     progenitorCreador_id: number,
@@ -53,12 +52,16 @@ export class HijosService {
       await this.usuariosService.findOne(progenitorCreador_id);
     const hijo = progenitor_creador.hijo;
     if (!hijo) {
-      throw new Error('No existe hijo');
+      throw new BadRequestException('No estás asoaciado a un hijo');
+    }
+    if (hijo.progenitores.length >= 2) {
+      throw new BadRequestException('Tu hijo ya se encuentra vinculado a otro');
     }
     const codigoInvitacion = uuidv4().substring(0, 6).toUpperCase();
     hijo.codigoInvitacion = codigoInvitacion;
     hijo.codigoExpiracion = new Date(Date.now() + 15 * 60 * 1000);
     await this.hijosRepository.save(hijo);
+    console.log(hijo);
     await this.mailService.enviarCodigoVinculacionProgenitor(
       enviarVinculoHijoDto.email_progenitor,
       codigoInvitacion,
@@ -70,44 +73,50 @@ export class HijosService {
       codigoInvitacion: codigo,
     });
     if (!hijo) {
-      throw new BadRequestException('Hijo no encontrado');
+      throw new NotFoundException('Hijo no encontrado');
     }
-    console.log('hijo encontrado:', hijo);
     if (hijo.codigoExpiracion < new Date()) {
       throw new BadRequestException('Código expirado');
     }
     const progenitor = await this.usuariosService.findOne(id);
-    console.log('progenitor  a asociar:', progenitor);
+    console.log(progenitor);
     if (progenitor.hijo) {
       throw new ForbiddenException('Ya te encuentras vinculado a otro hijo');
     }
-    progenitor.hijo = hijo;
+    hijo.progenitores.push(progenitor);
+    console.log(progenitor);
     await this.usuariosRepository.save(progenitor);
     hijo.codigoInvitacion = null;
     hijo.codigoExpiracion = null;
     await this.hijosRepository.save(hijo);
-    console.log('hijo vinculado: ', hijo);
     return hijo;
   }
 
+  /*
   async findAll() {
     return await this.hijosRepository.find();
   }
+    */
 
   async findOne(id: number) {
     const hijo = await this.hijosRepository.findOneBy({ id });
     if (!hijo) {
-      throw new BadRequestException('Hijo no encontrado');
+      throw new NotFoundException('Hijo no encontrado');
     }
     return hijo;
   }
 
-  //COMPLETAR ACTUALIZACIÓN
   async update(id: number, updateHijoDto: UpdateHijoDto) {
-    return `This action updates a #${id} hijo`;
+    const hijo = await this.findOne(id);
+    return await this.hijosRepository.save({ ...hijo, ...updateHijoDto });
   }
 
   async remove(id: number) {
+    const hijo = await this.findOne(id);
+    for (const progenitor of hijo.progenitores) {
+      progenitor.hijo = null;
+      await this.usuariosRepository.save(progenitor);
+    }
     return await this.hijosRepository.softDelete(id);
   }
 }

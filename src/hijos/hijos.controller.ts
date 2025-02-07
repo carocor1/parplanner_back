@@ -26,12 +26,6 @@ export class HijosController {
   async create(@Body() createHijoDto: CreateHijoDto, @Req() req) {
     return this.hijosService.create(createHijoDto, req.user.userId);
   }
-  /*
-  @Get()
-  async findAll() {
-    return this.hijosService.findAll();
-  }
-    */
 
   @UseGuards(JwtAuthGuard, EsProgenitorDelHijoGuard)
   @Get(':id')
@@ -39,7 +33,7 @@ export class HijosController {
     return this.hijosService.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard, EsProgenitorDelHijoGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('vinculacion')
   async enviarCodigoVinculacionProgenitor(
     @Body() enviarVinculoHijoDto: EnviarVinculoHijoDto,
@@ -63,11 +57,13 @@ export class HijosController {
     );
   }
 
+  @UseGuards(JwtAuthGuard, EsProgenitorDelHijoGuard)
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updateHijoDto: UpdateHijoDto) {
     return this.hijosService.update(id, updateHijoDto);
   }
 
+  @UseGuards(JwtAuthGuard, EsProgenitorDelHijoGuard)
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.hijosService.remove(id);
