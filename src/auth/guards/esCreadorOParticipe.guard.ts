@@ -15,6 +15,7 @@ export class EsCreadorOParticipeGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
     const gastoId = request.params.id;
+
     const gasto: Gasto = await this.gastosService.findOne(gastoId);
     if (
       gasto.usuario_creador.id !== user.userId &&

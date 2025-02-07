@@ -61,7 +61,6 @@ export class HijosService {
     hijo.codigoInvitacion = codigoInvitacion;
     hijo.codigoExpiracion = new Date(Date.now() + 15 * 60 * 1000);
     await this.hijosRepository.save(hijo);
-    console.log(hijo);
     await this.mailService.enviarCodigoVinculacionProgenitor(
       enviarVinculoHijoDto.email_progenitor,
       codigoInvitacion,
@@ -79,12 +78,10 @@ export class HijosService {
       throw new BadRequestException('Código expirado');
     }
     const progenitor = await this.usuariosService.findOne(id);
-    console.log(progenitor);
     if (progenitor.hijo) {
       throw new ForbiddenException('Ya te encuentras vinculado a otro hijo');
     }
     hijo.progenitores.push(progenitor);
-    console.log(progenitor);
     await this.usuariosRepository.save(progenitor);
     hijo.codigoInvitacion = null;
     hijo.codigoExpiracion = null;

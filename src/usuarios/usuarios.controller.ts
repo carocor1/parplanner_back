@@ -11,7 +11,12 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RegistroUsuarioDto } from './dto/registro-usuario.dto';
 import { UsuariosService } from './usuarios.service';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({
+  description: 'Bearer token no autorizado',
+})
 @Controller('usuarios')
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
@@ -28,6 +33,7 @@ export class UsuariosController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: number,

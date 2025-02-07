@@ -64,7 +64,7 @@ export class GastosController {
     return await this.gastosService.proponerParticion(id, proponerParticionDto);
   }
 
-  @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async listarGastosCompartidos(@Req() req) {
     return await this.gastosService.listarGastosCompartidos(req.user.userId);
