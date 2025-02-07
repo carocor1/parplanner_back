@@ -26,7 +26,7 @@ export class Usuario {
   apellido: string;
 
   @Column({ nullable: true })
-  nro_telefono: number;
+  nro_telefono: string;
 
   @Column({ nullable: true })
   fecha_nacimiento: Date;

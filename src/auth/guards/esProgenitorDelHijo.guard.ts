@@ -22,12 +22,11 @@ export class EsProgenitorDelHijoGuard implements CanActivate {
     if (!hijoId) {
       const progenitor = await this.usuariosService.findOne(user.userId);
       if (!progenitor.hijo) {
-        throw new ForbiddenException('No se tiene permiso');
+        throw new ForbiddenException('No tienes un hijo asociado');
       }
       return true;
     }
     const hijo: Hijo = await this.hijosService.findOne(hijoId);
-
     const esProgenitor = hijo.progenitores.some(
       (usuario) => usuario.id === user.userId,
     );
