@@ -37,7 +37,4 @@ export class CreateGastoDto {
 
   @IsString()
   categoria: string;
-
-  @IsNumber()
-  usuario_participe: number;
 }

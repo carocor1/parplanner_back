@@ -1,12 +1,17 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateGastoDto } from './dto/create-gasto.dto';
 import { UpdateGastoDto } from './dto/update-gasto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Gasto } from './entities/gasto.entity';
 import { Repository } from 'typeorm';
 import { Categoria } from 'src/categorias/entities/categoria.entity';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import { ProponerParticionDto } from './dto/proponer-particion.dto';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { HijosService } from 'src/hijos/hijos.service';
 
 @Injectable()
 export class GastosService {
@@ -17,8 +22,9 @@ export class GastosService {
     @InjectRepository(Categoria)
     private readonly categoriasRepository: Repository<Categoria>,
 
-    @InjectRepository(Usuario)
-    private readonly usuariosRepository: Repository<Usuario>,
+    private readonly hijosService: HijosService,
+
+    private readonly usuariosService: UsuariosService,
   ) {}
 
   async create(createGastoDto: CreateGastoDto, userId: number) {
@@ -28,25 +34,30 @@ export class GastosService {
     if (!categoria) {
       throw new BadRequestException('Categoria no encontrada');
     }
-    const usuario_creador = await this.usuariosRepository.findOneBy({
-      id: userId,
-    });
-    if (!usuario_creador) {
-      throw new BadRequestException('Usuario creador no encontrado');
+    const usuario_creador = await this.usuariosService.findOne(userId);
+    const hijoEnComun = await this.hijosService.findOne(
+      usuario_creador.hijo.id,
+    );
+    if (!hijoEnComun.progenitores || hijoEnComun.progenitores.length < 2) {
+      throw new NotFoundException(
+        'Progenitores no encontrados o falta vincular correctamente',
+      );
     }
-    const usuario_participe = await this.usuariosRepository.findOneBy({
-      id: createGastoDto.usuario_participe,
-    });
-    if (!usuario_participe) {
-      throw new BadRequestException('Usuario partícipe no encontrada');
+    const progenitor_participe = hijoEnComun.progenitores.find(
+      (progenitor) => progenitor.id !== usuario_creador.id,
+    );
+    if (!progenitor_participe) {
+      throw new NotFoundException('Progenitor partícipe no encontrado');
     }
+
     const gasto = this.gastosRepository.create({
       ...createGastoDto,
       categoria,
       estado: { id: 1 },
       usuario_creador,
-      usuario_participe,
+      usuario_participe: progenitor_participe,
     });
+
     return await this.gastosRepository.save(gasto);
   }
 
@@ -97,16 +108,26 @@ export class GastosService {
   }
 
   async listarGastosCompartidos(userId: number) {
-    const progenitor1 = await this.usuariosRepository.findOneBy({ id: userId });
-    const hijoEnComun = progenitor1.hijo;
-    const progenitor2 = await this.usuariosRepository.findOneBy({
-      hijo: hijoEnComun,
-    });
+    const progenitor1 = await this.usuariosService.findOne(userId);
+    const hijoEnComun = await this.hijosService.findOne(progenitor1.hijo.id);
+
+    if (!hijoEnComun.progenitores || hijoEnComun.progenitores.length < 2) {
+      throw new NotFoundException(
+        'Progenitores no encontrados o falta vincular correctamente',
+      );
+    }
     const gastos = await this.gastosRepository.find({
-      where: {
-        usuario_creador: progenitor1,
-        usuario_participe: progenitor2,
-      },
+      where: [
+        {
+          usuario_creador: hijoEnComun.progenitores[0],
+          usuario_participe: hijoEnComun.progenitores[1],
+        },
+        {
+          usuario_creador: hijoEnComun.progenitores[1],
+          usuario_participe: hijoEnComun.progenitores[0],
+        },
+      ],
     });
+    return gastos;
   }
 }

@@ -6,6 +6,7 @@ import { Gasto } from './entities/gasto.entity';
 import { CategoriasModule } from 'src/categorias/categorias.module';
 import { EstadosModule } from 'src/estados/estados.module';
 import { UsuariosModule } from 'src/usuarios/usuarios.module';
+import { HijosModule } from 'src/hijos/hijos.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UsuariosModule } from 'src/usuarios/usuarios.module';
     CategoriasModule,
     EstadosModule,
     UsuariosModule,
+    HijosModule,
   ],
   controllers: [GastosController],
   providers: [GastosService],
