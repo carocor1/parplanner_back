@@ -19,7 +19,6 @@ export class AuthService {
     if (await this.usuarioService.UserExist(registerDto.email)) {
       throw new BadRequestException('El email ya se encuentra registrado');
     } else {
-      console.log('adentro del false');
       const hashPassword = await this.usuarioService.hashPassword(
         registerDto.contraseña,
       );

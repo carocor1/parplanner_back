@@ -89,12 +89,6 @@ export class HijosService {
     return hijo;
   }
 
-  /*
-  async findAll() {
-    return await this.hijosRepository.find();
-  }
-    */
-
   async findOne(id: number) {
     const hijo = await this.hijosRepository.findOneBy({ id });
     if (!hijo) {
@@ -108,6 +102,7 @@ export class HijosService {
     return await this.hijosRepository.save({ ...hijo, ...updateHijoDto });
   }
 
+  //PROBAR
   async remove(id: number) {
     const hijo = await this.findOne(id);
     for (const progenitor of hijo.progenitores) {
@@ -115,5 +110,27 @@ export class HijosService {
       await this.usuariosRepository.save(progenitor);
     }
     return await this.hijosRepository.softDelete(id);
+  }
+
+  async verificarVinculacion(id: number): Promise<boolean> {
+    console.log('verificando vinculacion');
+    const progenitor = await this.usuariosService.findOne(id);
+    console.log(progenitor);
+
+    if (!progenitor || !progenitor.hijo) {
+      throw new NotFoundException('Progenitor o hijo no encontrado');
+    }
+
+    const hijo = await this.hijosRepository.findOne({
+      where: { id: progenitor.hijo.id },
+      relations: ['progenitores'],
+    });
+
+    if (!hijo || hijo.progenitores.length !== 2) {
+      return false;
+    }
+    const [progenitor1, progenitor2] = hijo.progenitores;
+    //si son distintos devuelve true;
+    return progenitor1.id !== progenitor2.id;
   }
 }

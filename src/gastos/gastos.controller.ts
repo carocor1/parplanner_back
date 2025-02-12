@@ -27,13 +27,6 @@ export class GastosController {
     return await this.gastosService.create(createGastoDto, req.user.userId);
   }
 
-  /*
-  @Get()
-  findAll() {
-    return this.gastosService.findAll();
-  }
-    */
-
   @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuard)
   @Get(':id')
   async findOne(@Param('id') id: number) {

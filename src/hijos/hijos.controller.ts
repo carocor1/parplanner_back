@@ -33,6 +33,7 @@ export class HijosController {
     return this.hijosService.findOne(id);
   }
 
+  //podría ir guardian de esprogenitordelhijo
   @UseGuards(JwtAuthGuard)
   @Post('vinculacion')
   async enviarCodigoVinculacionProgenitor(
@@ -67,5 +68,12 @@ export class HijosController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.hijosService.remove(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('verificar-vinculacion')
+  async verificarVinculacion(@Req() req) {
+    console.log('verificando vinculacion');
+    return this.hijosService.verificarVinculacion(req.user.userId);
   }
 }
