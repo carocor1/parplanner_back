@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -40,5 +41,17 @@ export class UsuariosController {
     @Body() updateUsuarioDto: UpdateUsuarioDto,
   ) {
     return await this.usuariosService.update(id, updateUsuarioDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('tiene-hijo')
+  async tieneHijos(@Req() req) {
+    return await this.usuariosService.tieneHijo(req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('verificar-registro')
+  async verificarRegistro(@Req() req) {
+    return await this.usuariosService.verificarRegistro(req.user.userId);
   }
 }

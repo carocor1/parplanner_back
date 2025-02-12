@@ -25,14 +25,35 @@ export class UsuariosService {
   }
 
   async UserExist(email: string): Promise<Boolean> {
-    console.log(email);
     if (await this.usuariosRepository.findOne({ where: { email } })) {
-      console.log('true');
       return true;
     } else {
-      console.log('false');
       return false;
     }
+  }
+
+  async tieneHijo(id: number) {
+    const usuario = await this.findOne(id);
+    if (!usuario.hijo) {
+      return false;
+    }
+    return true;
+  }
+
+  async verificarRegistro(id: number) {
+    const usuario = await this.findOne(id);
+    if (
+      !usuario.fecha_nacimiento ||
+      !usuario.provincia ||
+      !usuario.ciudad ||
+      !usuario.documento ||
+      !usuario.sexo ||
+      !usuario.cbu ||
+      !usuario.nro_telefono
+    ) {
+      return false;
+    }
+    return true;
   }
 
   async registrarUsuario(registroUsuarioDto: RegistroUsuarioDto, id: number) {
