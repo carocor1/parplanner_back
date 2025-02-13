@@ -16,7 +16,7 @@ export class AuthController {
   @Post('login')
   @UseGuards(AuthGuard('local'))
   async login(@Req() req) {
-    return this.authService.generateToken(req.user);
+    return this.authService.generateTokens(req.user);
   }
 
   @Get('google')
@@ -27,5 +27,10 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req) {
     return await this.authService.validateOrCreateUserFromGoogle(req.user);
+  }
+
+  @Post('refresh')
+  async refresh(@Body('refresh_token') refreshToken: string) {
+    return this.authService.refreshTokens(refreshToken);
   }
 }

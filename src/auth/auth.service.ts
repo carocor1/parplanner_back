@@ -27,7 +27,7 @@ export class AuthService {
         contraseña: hashPassword,
       });
       await this.usuariosRepository.save(user);
-      return await this.generateToken(user);
+      return await this.generateTokens(user);
     }
   }
 
@@ -43,10 +43,11 @@ export class AuthService {
     return null;
   }
 
-  async generateToken(usuario: Usuario) {
+  async generateTokens(usuario: Usuario) {
     const payload = { email: usuario.email, sub: usuario.id };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, { expiresIn: '1h' }),
+      refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
     };
   }
 
@@ -66,6 +67,20 @@ export class AuthService {
       user.googleId = sub;
     }
     await this.usuariosRepository.save(user);
-    return this.generateToken(user);
+    return this.generateTokens(user);
+  }
+
+  async refreshTokens(refreshToken: string) {
+    try {
+      const payload = await this.jwtService.verify(refreshToken);
+      const user = await this.usuarioService.findOne(payload.sub);
+      if (!user) {
+        throw new BadRequestException('Refresh token no válido');
+      } else {
+        return await this.generateTokens(user);
+      }
+    } catch (error) {
+      throw new BadRequestException('Invalid token');
+    }
   }
 }
