@@ -113,9 +113,7 @@ export class HijosService {
   }
 
   async verificarVinculacion(id: number): Promise<boolean> {
-    console.log('verificando vinculacion');
     const progenitor = await this.usuariosService.findOne(id);
-    console.log(progenitor);
 
     if (!progenitor || !progenitor.hijo) {
       throw new NotFoundException('Progenitor o hijo no encontrado');
@@ -130,7 +128,6 @@ export class HijosService {
       return false;
     }
     const [progenitor1, progenitor2] = hijo.progenitores;
-    //si son distintos devuelve true;
     return progenitor1.id !== progenitor2.id;
   }
 }

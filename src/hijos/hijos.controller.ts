@@ -22,6 +22,12 @@ export class HijosController {
   constructor(private readonly hijosService: HijosService) {}
 
   @UseGuards(JwtAuthGuard)
+  @Get('verificar-vinculacion')
+  async probando(@Req() req) {
+    return await this.hijosService.verificarVinculacion(req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createHijoDto: CreateHijoDto, @Req() req) {
     return this.hijosService.create(createHijoDto, req.user.userId);
@@ -40,6 +46,7 @@ export class HijosController {
     @Body() enviarVinculoHijoDto: EnviarVinculoHijoDto,
     @Req() req,
   ) {
+    console.log('enviando vinculo al email ingresado');
     return await this.hijosService.enviarCodigoVinculacionProgenitor(
       enviarVinculoHijoDto,
       req.user.userId,
@@ -68,12 +75,5 @@ export class HijosController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.hijosService.remove(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('verificar-vinculacion')
-  async verificarVinculacion(@Req() req) {
-    console.log('verificando vinculacion');
-    return this.hijosService.verificarVinculacion(req.user.userId);
   }
 }
