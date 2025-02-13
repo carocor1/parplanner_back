@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   Req,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -35,15 +36,6 @@ export class UsuariosController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() updateUsuarioDto: UpdateUsuarioDto,
-  ) {
-    return await this.usuariosService.update(id, updateUsuarioDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Get('tiene-hijo')
   async tieneHijos(@Req() req) {
     return await this.usuariosService.tieneHijo(req.user.userId);
@@ -53,5 +45,23 @@ export class UsuariosController {
   @Get('verificar-registro')
   async verificarRegistro(@Req() req) {
     return await this.usuariosService.verificarRegistro(req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async findOne(@Param('id') id: number, @Req() req) {
+    if (req.user.userId !== id) {
+      throw new UnauthorizedException('No autorizado');
+    }
+    return await this.usuariosService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() updateUsuarioDto: UpdateUsuarioDto,
+  ) {
+    return await this.usuariosService.update(id, updateUsuarioDto);
   }
 }
