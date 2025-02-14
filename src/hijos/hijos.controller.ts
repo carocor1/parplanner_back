@@ -46,7 +46,6 @@ export class HijosController {
     @Body() enviarVinculoHijoDto: EnviarVinculoHijoDto,
     @Req() req,
   ) {
-    console.log('enviando vinculo al email ingresado');
     return await this.hijosService.enviarCodigoVinculacionProgenitor(
       enviarVinculoHijoDto,
       req.user.userId,

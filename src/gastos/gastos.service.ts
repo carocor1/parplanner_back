@@ -116,6 +116,7 @@ export class GastosService {
         'Progenitores no encontrados o falta vincular correctamente',
       );
     }
+
     const gastos = await this.gastosRepository.find({
       where: [
         {
@@ -127,7 +128,11 @@ export class GastosService {
           usuario_participe: hijoEnComun.progenitores[0],
         },
       ],
+      order: {
+        fecha: 'DESC',
+      },
     });
+
     return gastos;
   }
 }

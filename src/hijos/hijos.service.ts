@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -78,8 +77,11 @@ export class HijosService {
       throw new BadRequestException('Código expirado');
     }
     const progenitor = await this.usuariosService.findOne(id);
-    if (progenitor.hijo) {
-      throw new ForbiddenException('Ya te encuentras vinculado a otro hijo');
+    if (hijo.progenitores.includes(progenitor)) {
+      throw new BadRequestException('Ya está vinculado');
+    }
+    if (hijo.progenitores.length >= 3) {
+      throw new BadRequestException('No puedes vincular más de 3 hijos');
     }
     hijo.progenitores.push(progenitor);
     await this.usuariosRepository.save(progenitor);
