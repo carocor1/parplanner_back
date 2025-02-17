@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,6 +14,7 @@ import { Categoria } from 'src/categorias/entities/categoria.entity';
 import { ProponerParticionDto } from './dto/proponer-particion.dto';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { HijosService } from 'src/hijos/hijos.service';
+import { PropuestasParticionService } from 'src/propuestas_particion/propuestas_particion.service';
 
 @Injectable()
 export class GastosService {
@@ -25,6 +28,9 @@ export class GastosService {
     private readonly hijosService: HijosService,
 
     private readonly usuariosService: UsuariosService,
+
+    @Inject(forwardRef(() => PropuestasParticionService))
+    private readonly propuestasParticionService: PropuestasParticionService,
   ) {}
 
   async create(createGastoDto: CreateGastoDto, userId: number) {
@@ -49,16 +55,41 @@ export class GastosService {
     if (!progenitor_participe) {
       throw new NotFoundException('Progenitor partícipe no encontrado');
     }
+    const {
+      titulo,
+      descripcion,
+      monto,
+      fecha,
+      particion_usuario_creador,
+      particion_usuario_participe,
+    } = createGastoDto;
 
     const gasto = this.gastosRepository.create({
-      ...createGastoDto,
+      titulo,
+      descripcion,
+      monto,
+      fecha,
       categoria,
       estado: { id: 1 },
       usuario_creador,
+      particion_usuario_creador, //a eliminar
+      particion_usuario_participe, //a eliminar
       usuario_participe: progenitor_participe,
+      propuestas_particion: [],
     });
 
-    return await this.gastosRepository.save(gasto);
+    const gastoCreado = await this.gastosRepository.save(gasto);
+
+    await this.propuestasParticionService.create(
+      {
+        particion_usuario_creador_gasto: particion_usuario_creador,
+        particion_usuario_participe_gasto: particion_usuario_participe,
+      },
+      gastoCreado.id,
+      userId,
+    );
+    const gastoConRelacion = await this.findOne(gastoCreado.id);
+    return gastoConRelacion;
   }
 
   async findAll() {
@@ -66,13 +97,17 @@ export class GastosService {
   }
 
   async findOne(id: number) {
-    const gasto = await this.gastosRepository.findOneBy({ id });
+    const gasto = await this.gastosRepository.findOne({
+      where: { id },
+      relations: ['propuestas_particion'],
+    });
     if (!gasto) {
       throw new BadRequestException('Gasto no encontrado');
     }
     return gasto;
   }
 
+  //A eliminar en DTO particion_usuario_creador y particion_usuario_participe
   async update(id: number, updateGastoDto: UpdateGastoDto) {
     await this.findOne(id);
     let categoria: Categoria;
@@ -94,6 +129,7 @@ export class GastosService {
     return await this.gastosRepository.softDelete(id);
   }
 
+  //A ELIMINAR
   async proponerParticion(
     id: number,
     proponerParticionDto: ProponerParticionDto,
@@ -104,6 +140,12 @@ export class GastosService {
     return await this.gastosRepository.update(id, {
       particion_usuario_creador,
       particion_usuario_participe,
+    });
+  }
+
+  async aceptarParticion(gasto: Gasto) {
+    return await this.gastosRepository.update(gasto.id, {
+      estado: { id: 3 },
     });
   }
 

@@ -27,7 +27,7 @@ export class MercadoPagoService {
         title: gasto.titulo,
         quantity: 1,
         currency_id: 'ARS',
-        unit_price: (gasto.particion_usuario_participe * gasto.monto) / 100,
+        unit_price: gasto.monto,
       }));
 
       const preference = new Preference(this.client);
