@@ -25,7 +25,6 @@ export class Estado {
   @OneToMany(
     () => PropuestasParticion,
     (propuestas_particion) => propuestas_particion.estado,
-    { eager: true },
   )
   propuestas_particion: PropuestasParticion[];
 

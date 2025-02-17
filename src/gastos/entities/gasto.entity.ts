@@ -56,6 +56,7 @@ export class Gasto {
   @OneToMany(
     () => PropuestasParticion,
     (propuestasParticion) => propuestasParticion.gasto,
+    { nullable: true, eager: true },
   )
   propuestas_particion: PropuestasParticion[];
 }

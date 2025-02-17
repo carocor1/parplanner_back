@@ -5,8 +5,8 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -15,7 +15,7 @@ export class PropuestasParticion {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.id)
+  @ManyToOne(() => Usuario, (usuario) => usuario.id, { eager: true })
   usuario_creador: Usuario;
 
   @Column()
@@ -24,10 +24,11 @@ export class PropuestasParticion {
   @Column()
   particion_usuario_participe_gasto: number;
 
-  @ManyToOne(() => Estado, (estado) => estado.id)
+  @ManyToOne(() => Estado, (estado) => estado.id, { eager: true })
   estado: Estado;
 
   @ManyToOne(() => Gasto, (gasto) => gasto.propuestas_particion)
+  @JoinColumn({ name: 'gastoId' })
   gasto: Gasto;
 
   @DeleteDateColumn()
