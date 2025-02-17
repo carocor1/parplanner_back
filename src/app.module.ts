@@ -10,6 +10,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { AuthModule } from './auth/auth.module';
 import { HijosModule } from './hijos/hijos.module';
 import { MailModule } from './mail/mail.module';
+import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     HijosModule,
     MailModule,
+    MercadoPagoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

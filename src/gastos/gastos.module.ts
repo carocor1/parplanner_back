@@ -18,5 +18,6 @@ import { HijosModule } from 'src/hijos/hijos.module';
   ],
   controllers: [GastosController],
   providers: [GastosService],
+  exports: [GastosService],
 })
 export class GastosModule {}
