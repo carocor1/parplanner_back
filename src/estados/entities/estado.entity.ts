@@ -1,4 +1,5 @@
 import { Gasto } from 'src/gastos/entities/gasto.entity';
+import { PropuestasParticion } from 'src/propuestas_particion/entities/propuestas_particion.entity';
 import {
   PrimaryGeneratedColumn,
   Column,
@@ -20,4 +21,14 @@ export class Estado {
 
   @DeleteDateColumn()
   fechaEliminacion: Date;
+
+  @OneToMany(
+    () => PropuestasParticion,
+    (propuestas_particion) => propuestas_particion.estado,
+    { eager: true },
+  )
+  propuestas_particion: PropuestasParticion[];
+
+  @Column()
+  ambito: string;
 }

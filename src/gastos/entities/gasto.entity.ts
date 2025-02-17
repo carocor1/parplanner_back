@@ -1,5 +1,6 @@
 import { Categoria } from 'src/categorias/entities/categoria.entity';
 import { Estado } from 'src/estados/entities/estado.entity';
+import { PropuestasParticion } from 'src/propuestas_particion/entities/propuestas_particion.entity';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import {
   Column,
@@ -51,4 +52,10 @@ export class Gasto {
 
   @ManyToOne(() => Usuario, (usuario) => usuario.id, { eager: true })
   usuario_participe: Usuario;
+
+  @OneToMany(
+    () => PropuestasParticion,
+    (propuestasParticion) => propuestasParticion.gasto,
+  )
+  propuestas_particion: PropuestasParticion[];
 }
