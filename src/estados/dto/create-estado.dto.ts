@@ -4,4 +4,8 @@ export class CreateEstadoDto {
   @IsString()
   @MinLength(4)
   nombre: string;
+
+  @IsString()
+  @MinLength(4)
+  ambito: string;
 }

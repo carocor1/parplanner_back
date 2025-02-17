@@ -6,4 +6,8 @@ export class UpdateEstadoDto extends PartialType(CreateEstadoDto) {
   @IsOptional()
   @IsString()
   nombre?: string;
+
+  @IsOptional()
+  @IsString()
+  ambito?: string;
 }

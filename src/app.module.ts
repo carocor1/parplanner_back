@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { HijosModule } from './hijos/hijos.module';
 import { MailModule } from './mail/mail.module';
 import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
+import { PropuestasParticionModule } from './propuestas_particion/propuestas_particion.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
     HijosModule,
     MailModule,
     MercadoPagoModule,
+    PropuestasParticionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
