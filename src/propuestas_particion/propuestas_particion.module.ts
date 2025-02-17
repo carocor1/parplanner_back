@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PropuestasParticionService } from './propuestas_particion.service';
 import { PropuestasParticionController } from './propuestas_particion.controller';
 import { PropuestasParticion } from './entities/propuestas_particion.entity';
@@ -10,12 +10,12 @@ import { EstadosModule } from 'src/estados/estados.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([PropuestasParticion]),
-    GastosModule,
     UsuariosModule,
     EstadosModule,
+    forwardRef(() => GastosModule),
   ],
   controllers: [PropuestasParticionController],
   providers: [PropuestasParticionService],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, PropuestasParticionService],
 })
 export class PropuestasParticionModule {}
