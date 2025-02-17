@@ -11,6 +11,7 @@ import { PropuestasParticionService } from './propuestas_particion.service';
 import { CreatePropuestasParticionDto } from './dto/create-propuestas_particion.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { EsCreadorOParticipeGuard } from 'src/auth/guards/esCreadorOParticipe.guard';
+import { PropuestaParticionGuard } from 'src/auth/guards/propuesta-particion.guard';
 
 @Controller('propuestas-particion')
 export class PropuestasParticionController {
@@ -32,7 +33,7 @@ export class PropuestasParticionController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PropuestaParticionGuard)
   @Post('rechazar/:id')
   async rechazarSolicitud(
     @Param('id') id: number,
@@ -46,7 +47,7 @@ export class PropuestasParticionController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PropuestaParticionGuard)
   @Get('aprobar/:id')
   async aprobarSolicitud(@Param('id') id: number, @Req() req) {
     return await this.propuestasParticionService.aprobarPropuesta(
@@ -55,6 +56,7 @@ export class PropuestasParticionController {
     );
   }
 
+  @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuard)
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return await this.propuestasParticionService.findOne(id);
