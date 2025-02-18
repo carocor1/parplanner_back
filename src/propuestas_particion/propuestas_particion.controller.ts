@@ -69,11 +69,4 @@ export class PropuestasParticionController {
       gastoId,
     );
   }
-
-  /*
-  @Get()
-  findAll() {
-    return this.propuestasParticionService.findAll();
-  }
-    */
 }
