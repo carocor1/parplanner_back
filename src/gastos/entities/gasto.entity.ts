@@ -28,12 +28,6 @@ export class Gasto {
   @Column()
   fecha: Date;
 
-  @Column()
-  particion_usuario_creador: number;
-
-  @Column()
-  particion_usuario_participe: number;
-
   @DeleteDateColumn()
   fechaEliminacion: Date;
 

@@ -16,15 +16,5 @@ export class UpdateGastoDto {
   fecha?: Date;
 
   @IsOptional()
-  @Min(1)
-  @Max(100)
-  particion_usuario_creador?: number;
-
-  @IsOptional()
-  @Min(1)
-  @Max(100)
-  particion_usuario_participe?: number;
-
-  @IsOptional()
   categoria?: string;
 }
