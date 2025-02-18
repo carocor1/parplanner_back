@@ -11,7 +11,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Gasto } from './entities/gasto.entity';
 import { Repository } from 'typeorm';
 import { Categoria } from 'src/categorias/entities/categoria.entity';
-import { ProponerParticionDto } from './dto/proponer-particion.dto';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { HijosService } from 'src/hijos/hijos.service';
 import { PropuestasParticionService } from 'src/propuestas_particion/propuestas_particion.service';
@@ -72,8 +71,6 @@ export class GastosService {
       categoria,
       estado: { id: 1 },
       usuario_creador,
-      particion_usuario_creador, //a eliminar
-      particion_usuario_participe, //a eliminar
       usuario_participe: progenitor_participe,
       propuestas_particion: [],
     });
@@ -107,7 +104,6 @@ export class GastosService {
     return gasto;
   }
 
-  //A eliminar en DTO particion_usuario_creador y particion_usuario_participe
   async update(id: number, updateGastoDto: UpdateGastoDto) {
     await this.findOne(id);
     let categoria: Categoria;
@@ -129,24 +125,18 @@ export class GastosService {
     return await this.gastosRepository.softDelete(id);
   }
 
-  //A ELIMINAR
-  async proponerParticion(
-    id: number,
-    proponerParticionDto: ProponerParticionDto,
-  ) {
-    await this.findOne(id);
-    const { particion_usuario_creador, particion_usuario_participe } =
-      proponerParticionDto;
-    return await this.gastosRepository.update(id, {
-      particion_usuario_creador,
-      particion_usuario_participe,
-    });
-  }
-
   async aceptarParticion(gasto: Gasto) {
     return await this.gastosRepository.update(gasto.id, {
       estado: { id: 3 },
     });
+  }
+
+  async pagarGastos(id: number) {
+    const gasto = await this.findOne(id);
+    if (gasto.estado.id !== 3) {
+      throw new BadRequestException('El gasto no está pendiente de pago');
+    }
+    return await this.gastosRepository.update(id, { estado: { id: 2 } });
   }
 
   async listarGastosCompartidos(userId: number) {

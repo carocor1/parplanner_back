@@ -15,7 +15,6 @@ import { UpdateGastoDto } from './dto/update-gasto.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { EsCreadorOParticipeGuard } from 'src/auth/guards/esCreadorOParticipe.guard';
 import { EsCreadorGuard } from 'src/auth/guards/esCreador.guard';
-import { ProponerParticionDto } from './dto/proponer-particion.dto';
 
 @Controller('gastos')
 export class GastosController {
@@ -46,15 +45,6 @@ export class GastosController {
   @Delete(':id')
   async remove(@Param('id') id: number) {
     return await this.gastosService.remove(id);
-  }
-
-  @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuard)
-  @Post('propuesta/:id')
-  async proponerParticion(
-    @Param('id') id: number,
-    @Body() proponerParticionDto: ProponerParticionDto,
-  ) {
-    return await this.gastosService.proponerParticion(id, proponerParticionDto);
   }
 
   @UseGuards(JwtAuthGuard)
