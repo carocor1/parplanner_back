@@ -8,7 +8,7 @@ import {
 import { CreatePropuestasParticionDto } from './dto/create-propuestas_particion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PropuestasParticion } from './entities/propuestas_particion.entity';
-import { Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { GastosService } from 'src/gastos/gastos.service';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { Gasto } from 'src/gastos/entities/gasto.entity';
@@ -85,16 +85,7 @@ export class PropuestasParticionService {
     return propuesta;
   }
 
-  /*
-  update(
-    id: number,
-    updatePropuestasParticionDto: UpdatePropuestasParticionDto,
-  ) {
-    return `This action updates a #${id} propuestasParticion`;
-  }
-    */
-
-  async rechazarPropuesta(
+  async rechazar(
     idPropuesta: number,
     userId: number,
     createPropuestasParticionDto: CreatePropuestasParticionDto,
@@ -121,7 +112,7 @@ export class PropuestasParticionService {
     );
   }
 
-  async aprobarPropuesta(id: number, userId: number) {
+  async aprobar(id: number, userId: number) {
     const usuario = await this.usuariosService.findOne(userId);
     const propuestasParticion = await this.findOne(id);
     await this.verificarPropuestaAceptada(propuestasParticion.gasto.id);
@@ -140,7 +131,7 @@ export class PropuestasParticionService {
     const gasto = await this.gastosService.findOne(
       propuestasParticion.gasto.id,
     );
-    return await this.gastosService.aceptarParticion(gasto);
+    return await this.gastosService.aprobarParticion(gasto);
   }
 
   async verificarPropuestaAceptada(gastoId: number) {
@@ -154,10 +145,4 @@ export class PropuestasParticionService {
       );
     }
   }
-
-  /*
-  remove(id: number) {
-    return `This action removes a #${id} propuestasParticion`;
-  }
-    */
 }

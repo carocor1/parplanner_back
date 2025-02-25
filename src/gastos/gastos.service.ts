@@ -125,7 +125,7 @@ export class GastosService {
     return await this.gastosRepository.softDelete(id);
   }
 
-  async aceptarParticion(gasto: Gasto) {
+  async aprobarParticion(gasto: Gasto) {
     return await this.gastosRepository.update(gasto.id, {
       estado: { id: 3 },
     });

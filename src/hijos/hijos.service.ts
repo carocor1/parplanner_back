@@ -104,7 +104,6 @@ export class HijosService {
     return await this.hijosRepository.save({ ...hijo, ...updateHijoDto });
   }
 
-  //PROBAR
   async remove(id: number) {
     const hijo = await this.findOne(id);
     for (const progenitor of hijo.progenitores) {

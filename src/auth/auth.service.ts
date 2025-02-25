@@ -45,6 +45,7 @@ export class AuthService {
 
   async generateTokens(usuario: Usuario) {
     const payload = { email: usuario.email, sub: usuario.id };
+    console.log(payload);
     return {
       access_token: this.jwtService.sign(payload, { expiresIn: '1h' }),
       refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
@@ -53,7 +54,7 @@ export class AuthService {
 
   async validateOrCreateUserFromGoogle(
     profile: any,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ access_token: string; refresh_token: string }> {
     const { email, givenName, familyName, sub } = profile;
     let user = await this.usuariosRepository.findOne({ where: { email } });
     if (!user) {
@@ -66,8 +67,9 @@ export class AuthService {
     } else {
       user.googleId = sub;
     }
+    console.log(user);
     await this.usuariosRepository.save(user);
-    return this.generateTokens(user);
+    return await this.generateTokens(user);
   }
 
   async refreshTokens(refreshToken: string) {
