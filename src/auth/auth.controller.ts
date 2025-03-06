@@ -3,6 +3,10 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RecuperarContraseñaDto } from './dto/recuperar-contraseña.dto';
+import { RecuperarContraseñaCodigoDto } from './dto/recuperar-contraseña-codigo.dto';
+import { CambiarContraseñaDTO } from './dto/cambiar-contraseña.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -30,6 +34,36 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   async login(@Req() req) {
     return this.authService.generateTokens(req.user);
+  }
+
+  @Post('recuperar-contrasenia')
+  async recuperarContraseña(
+    @Body() recuperarContraseñaDTO: RecuperarContraseñaDto,
+  ) {
+    return this.authService.enviarCodigoRecuperacionContraseña(
+      recuperarContraseñaDTO.email,
+    );
+  }
+
+  @Post('recuperar-contrasenia-codigo')
+  async recuperarContraseñaCodigo(
+    @Body() recuperarContraseñaCodigoDto: RecuperarContraseñaCodigoDto,
+  ) {
+    return this.authService.ingresarCodigoContraseña(
+      recuperarContraseñaCodigoDto.codigo,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('cambiar-contrasenia')
+  async cambiarContraseña(
+    @Req() req,
+    @Body() cambiarContraseñaDTO: CambiarContraseñaDTO,
+  ) {
+    return this.authService.cambiarContraseña(
+      cambiarContraseñaDTO.contraseñaNueva,
+      req.user.userId,
+    );
   }
 
   @ApiOperation({ summary: 'Iniciar sesión con Google' })
