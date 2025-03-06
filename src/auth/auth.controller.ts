@@ -1,22 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -46,14 +32,16 @@ export class AuthController {
     return this.authService.generateTokens(req.user);
   }
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
   @ApiOperation({ summary: 'Iniciar sesión con Google' })
   @ApiResponse({
     status: 200,
     description: 'Redirección a Google para autenticación.',
   })
-  async googleAuth() {}
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {
+    console.log('iniciando con google');
+  }
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
