@@ -13,4 +13,13 @@ export class MailService {
       context: { codigo },
     });
   }
+
+  async enviarCodigoRecuperacionContraseña(email: string, codigo: string) {
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Código de recuperación de contraseña',
+      template: 'recuperacion_contraseña',
+      context: { codigo },
+    });
+  }
 }

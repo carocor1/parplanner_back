@@ -52,6 +52,12 @@ export class Usuario {
   @Column({ nullable: true })
   googleId: string;
 
+  @Column({ nullable: true })
+  codigoRecuperacion: string;
+
+  @Column({ nullable: true })
+  fechaExpiracionCodigo: Date;
+
   @ManyToOne(() => Hijo, (hijo) => hijo.progenitores)
   @JoinColumn({ name: 'hijo_id' })
   hijo: Hijo;

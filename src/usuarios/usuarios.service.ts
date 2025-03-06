@@ -78,4 +78,19 @@ export class UsuariosService {
     await this.findOne(id);
     return await this.usuariosRepository.update(id, { ...updateUsuarioDto });
   }
+
+  async cambiarContraseña(contraseñaNueva: string, usuarioId: number) {
+    const user = await this.findOne(usuarioId);
+    if (user.codigoRecuperacion !== 'VALIDADO') {
+      throw new NotFoundException(
+        'El código de recuperación no ha sido validado',
+      );
+    }
+    user.codigoRecuperacion = null;
+    await this.usuariosRepository.save(user);
+    const hashedPassword = await this.hashPassword(contraseñaNueva);
+    return await this.usuariosRepository.update(usuarioId, {
+      contraseña: hashedPassword,
+    });
+  }
 }
