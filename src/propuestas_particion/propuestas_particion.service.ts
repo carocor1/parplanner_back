@@ -12,6 +12,7 @@ import { Repository } from 'typeorm';
 import { GastosService } from 'src/gastos/gastos.service';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { Gasto } from 'src/gastos/entities/gasto.entity';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class PropuestasParticionService {
@@ -26,6 +27,8 @@ export class PropuestasParticionService {
     private readonly gastosService: GastosService,
 
     private readonly usuariosService: UsuariosService,
+
+    private readonly mailService: MailService,
   ) {}
 
   async create(
@@ -105,6 +108,14 @@ export class PropuestasParticionService {
       ...propuestasParticion,
       estado: { id: 6 },
     });
+    const gasto = await this.gastosService.findOne(
+      propuestasParticion.gasto.id,
+    );
+    this.mailService.enviarNotificaciónRechazoParticion(
+      usuario.nombre,
+      propuestasParticion.usuario_creador.email,
+      gasto.titulo,
+    );
     return await this.create(
       createPropuestasParticionDto,
       propuestasParticion.gasto.id,
@@ -130,6 +141,11 @@ export class PropuestasParticionService {
     });
     const gasto = await this.gastosService.findOne(
       propuestasParticion.gasto.id,
+    );
+    this.mailService.enviarNotificaciónAprobacionParticion(
+      usuario.nombre,
+      propuestasParticion.usuario_creador.email,
+      gasto.titulo,
     );
     return await this.gastosService.aprobarParticion(gasto);
   }

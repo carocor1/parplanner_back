@@ -6,12 +6,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GastosModule } from 'src/gastos/gastos.module';
 import { UsuariosModule } from 'src/usuarios/usuarios.module';
 import { EstadosModule } from 'src/estados/estados.module';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([PropuestasParticion]),
     UsuariosModule,
     EstadosModule,
+    MailModule,
     forwardRef(() => GastosModule),
   ],
   controllers: [PropuestasParticionController],
