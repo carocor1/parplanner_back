@@ -9,10 +9,10 @@ import { CreatePropuestasParticionDto } from './dto/create-propuestas_particion.
 import { InjectRepository } from '@nestjs/typeorm';
 import { PropuestasParticion } from './entities/propuestas_particion.entity';
 import { Repository } from 'typeorm';
-import { GastosService } from 'src/gastos/gastos.service';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
-import { Gasto } from 'src/gastos/entities/gasto.entity';
-import { MailService } from 'src/mail/mail.service';
+import { GastosService } from '../gastos/gastos.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { Gasto } from '../gastos/entities/gasto.entity';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class PropuestasParticionService {

@@ -13,8 +13,8 @@ import { HijosService } from './hijos.service';
 import { CreateHijoDto } from './dto/create-hijo.dto';
 import { UpdateHijoDto } from './dto/update-hijo.dto';
 import { EnviarVinculoHijoDto } from './dto/enviarvinculo-hijo.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { EsProgenitorDelHijoGuard } from 'src/auth/guards/esProgenitorDelHijo.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { EsProgenitorDelHijoGuard } from '../auth/guards/esProgenitorDelHijo.guard';
 import { VinculacionCodigoDto } from './dto/vinculacion-codigo.dto';
 import {
   ApiBearerAuth,

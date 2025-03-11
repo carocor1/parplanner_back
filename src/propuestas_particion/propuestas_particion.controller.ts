@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { PropuestasParticionService } from './propuestas_particion.service';
 import { CreatePropuestasParticionDto } from './dto/create-propuestas_particion.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { EsCreadorOParticipeGuard } from 'src/auth/guards/esCreadorOParticipe.guard';
-import { PropuestaParticionGuard } from 'src/auth/guards/propuesta-particion.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { EsCreadorOParticipeGuard } from '../auth/guards/esCreadorOParticipe.guard';
+import { PropuestaParticionGuard } from '../auth/guards/propuesta-particion.guard';
 import {
   ApiBearerAuth,
   ApiOperation,

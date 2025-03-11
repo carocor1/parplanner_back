@@ -12,9 +12,9 @@ import {
 import { GastosService } from './gastos.service';
 import { CreateGastoDto } from './dto/create-gasto.dto';
 import { UpdateGastoDto } from './dto/update-gasto.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { EsCreadorOParticipeGuard } from 'src/auth/guards/esCreadorOParticipe.guard';
-import { EsCreadorGuard } from 'src/auth/guards/esCreador.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { EsCreadorOParticipeGuard } from '../auth/guards/esCreadorOParticipe.guard';
+import { EsCreadorGuard } from '../auth/guards/esCreador.guard';
 import {
   ApiBearerAuth,
   ApiOperation,

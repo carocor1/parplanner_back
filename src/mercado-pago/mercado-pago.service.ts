@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
-import { Gasto } from 'src/gastos/entities/gasto.entity';
-import { GastosService } from 'src/gastos/gastos.service';
-import { PropuestasParticionService } from 'src/propuestas_particion/propuestas_particion.service';
+import { Gasto } from '../gastos/entities/gasto.entity';
+import { GastosService } from '../gastos/gastos.service';
+import { PropuestasParticionService } from '../propuestas_particion/propuestas_particion.service';
 
 @Injectable()
 export class MercadoPagoService {

@@ -1,4 +1,4 @@
-import { Hijo } from 'src/hijos/entities/hijo.entity';
+import { Hijo } from '../../hijos/entities/hijo.entity';
 import {
   Column,
   DeleteDateColumn,

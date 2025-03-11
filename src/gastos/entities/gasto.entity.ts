@@ -1,7 +1,7 @@
-import { Categoria } from 'src/categorias/entities/categoria.entity';
-import { Estado } from 'src/estados/entities/estado.entity';
-import { PropuestasParticion } from 'src/propuestas_particion/entities/propuestas_particion.entity';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
+import { Categoria } from '../../categorias/entities/categoria.entity';
+import { Estado } from '../../estados/entities/estado.entity';
+import { PropuestasParticion } from '../../propuestas_particion/entities/propuestas_particion.entity';
+import { Usuario } from '../../usuarios/entities/usuario.entity';
 import {
   Column,
   DeleteDateColumn,

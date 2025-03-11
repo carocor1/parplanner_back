@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/create-user.dto';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
-import { MailService } from 'src/mail/mail.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { MailService } from '../mail/mail.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
