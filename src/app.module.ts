@@ -13,6 +13,11 @@ import { MailModule } from './mail/mail.module';
 import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
 import { PropuestasParticionModule } from './propuestas_particion/propuestas_particion.module';
 
+import { PlanningModule } from './planning/planning.module';
+import { TipoPlanningModule } from './tipo_planning/tipo_planning.module';
+import { EventosModule } from './eventos/eventos.module';
+
+
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
@@ -35,6 +40,9 @@ import { PropuestasParticionModule } from './propuestas_particion/propuestas_par
     MailModule,
     MercadoPagoModule,
     PropuestasParticionModule,
+    TipoPlanningModule,
+    PlanningModule,
+    EventosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
