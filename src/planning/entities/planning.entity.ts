@@ -1,40 +1,45 @@
-import { TipoPlanning } from "src/tipo_planning/entities/tipo_planning.entity";
-import { Column, ManyToOne,DeleteDateColumn, PrimaryGeneratedColumn,Entity } from "typeorm";
-import { Usuario } from "src/usuarios/entities/usuario.entity";
-import { Estado } from "src/estados/entities/estado.entity";
-
+import { TipoPlanning } from 'src/tipo_planning/entities/tipo_planning.entity';
+import {
+  Column,
+  ManyToOne,
+  DeleteDateColumn,
+  PrimaryGeneratedColumn,
+  Entity,
+} from 'typeorm';
+import { Usuario } from 'src/usuarios/entities/usuario.entity';
+import { Estado } from 'src/estados/entities/estado.entity';
 
 @Entity()
 export class Planning {
-    @PrimaryGeneratedColumn()
-    id:number; 
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    fechaInicio:Date; 
+  @Column()
+  fechaInicio: Date;
 
-    @DeleteDateColumn()
-    deleatedAt: Date; 
+  @Column()
+  fechaCreacion: Date;
 
-   @ManyToOne(() => TipoPlanning, (tipoPlanning) => tipoPlanning.id, {
-       eager: true,
-    })
-    tipoPlanning: TipoPlanning;
-    
-    
-    @ManyToOne(()=>Estado, (estado)=>estado.id,{eager:true})
-    estado:Estado;
+  @DeleteDateColumn()
+  deleatedAt: Date;
 
-    @ManyToOne(()=> Usuario, (usuario)=>usuario.id, {eager:true})
-    usuario_creador: Usuario; 
+  @ManyToOne(() => TipoPlanning, (tipoPlanning) => tipoPlanning.id, {
+    eager: true,
+  })
+  tipoPlanning: TipoPlanning;
 
-    @ManyToOne(()=> Usuario, (usuario)=>usuario.id, {eager:true})
-    usuario_participe: Usuario; 
+  @ManyToOne(() => Estado, (estado) => estado.id, { eager: true })
+  estado: Estado;
 
-    @Column('simple-array', { nullable: true })
-    fechasAsignadasCreador: string[];
-  
-    @Column('simple-array', { nullable: true })
-    fechasAsignadasParticipe: string[];
+  @ManyToOne(() => Usuario, (usuario) => usuario.id, { eager: true })
+  usuario_creador: Usuario;
 
+  @ManyToOne(() => Usuario, (usuario) => usuario.id, { eager: true })
+  usuario_participe: Usuario;
 
+  @Column('simple-array', { nullable: true })
+  fechasAsignadasCreador: string[];
+
+  @Column('simple-array', { nullable: true })
+  fechasAsignadasParticipe: string[];
 }

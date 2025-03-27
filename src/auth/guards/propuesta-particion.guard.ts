@@ -13,7 +13,6 @@ import { PropuestasParticionService } from '../../propuestas_particion/propuesta
 export class PropuestaParticionGuard implements CanActivate {
   constructor(
     private readonly propuestasParticionService: PropuestasParticionService,
-    private readonly reflector: Reflector,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
