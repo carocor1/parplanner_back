@@ -1,6 +1,6 @@
-import { Estado } from 'src/estados/entities/estado.entity';
-import { Gasto } from 'src/gastos/entities/gasto.entity';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
+import { Estado } from '../../estados/entities/estado.entity';
+import { Gasto } from '../../gastos/entities/gasto.entity';
+import { Usuario } from '../../usuarios/entities/usuario.entity';
 import {
   Column,
   DeleteDateColumn,

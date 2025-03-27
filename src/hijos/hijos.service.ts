@@ -8,11 +8,11 @@ import { UpdateHijoDto } from './dto/update-hijo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Hijo } from './entities/hijo.entity';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { EnviarVinculoHijoDto } from './dto/enviarvinculo-hijo.dto';
-import { MailService } from 'src/mail/mail.service';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { MailService } from '../mail/mail.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
 
 @Injectable()
 export class HijosService {
@@ -104,7 +104,6 @@ export class HijosService {
     return await this.hijosRepository.save({ ...hijo, ...updateHijoDto });
   }
 
-  //PROBAR
   async remove(id: number) {
     const hijo = await this.findOne(id);
     for (const progenitor of hijo.progenitores) {

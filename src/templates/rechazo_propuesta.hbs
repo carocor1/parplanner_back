@@ -1,4 +1,4 @@
-<!-- templates/invitacion.hbs -->
+<!-- templates/rechazo_propuesta.hbs -->
 
 <html>
   <head>
@@ -19,32 +19,46 @@
       }
       h1 {
         color: #333333;
+        font-size: 24px;
       }
       p {
         color: #555555;
         font-size: 16px;
+        line-height: 1.5;
       }
-      .code {
-        font-size: 24px;
+      .highlight {
         font-weight: bold;
         color: #007bff;
-        margin: 20px 0;
       }
       .footer {
         margin-top: 20px;
         font-size: 14px;
         color: #888888;
       }
+      .button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+      }
     </style>
   </head>
   <body>
     <div class='container'>
-      <h1>¡Hola!</h1>
-      <p>Has recibido una invitación para vincularte a un hijo en nuestra
-        plataforma.</p>
-      <p>Tu código de invitación es:</p>
-      <div class='code'>{{codigo}}</div>
-      <p>Este código expirará en 15 minutos.</p>
+      <h1>Propuesta Rechazada</h1>
+      <p>
+        {{usuarioNombre}}
+        rechazó tu última propuesta de partición para el gasto
+        <span class='highlight'>{{gastoTitulo}}</span>
+      </p>
+      <p>
+        Accede a nuestra aplicación para conocer la nueva partición propuesta y
+        rechazarla o aprobarla.
+      </p>
       <div class='footer'>
         <p>Gracias por usar nuestra plataforma.</p>
       </div>

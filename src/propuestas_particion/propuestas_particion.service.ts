@@ -8,10 +8,11 @@ import {
 import { CreatePropuestasParticionDto } from './dto/create-propuestas_particion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PropuestasParticion } from './entities/propuestas_particion.entity';
-import { Not, Repository } from 'typeorm';
-import { GastosService } from 'src/gastos/gastos.service';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
-import { Gasto } from 'src/gastos/entities/gasto.entity';
+import { Repository } from 'typeorm';
+import { GastosService } from '../gastos/gastos.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { Gasto } from '../gastos/entities/gasto.entity';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class PropuestasParticionService {
@@ -26,6 +27,8 @@ export class PropuestasParticionService {
     private readonly gastosService: GastosService,
 
     private readonly usuariosService: UsuariosService,
+
+    private readonly mailService: MailService,
   ) {}
 
   async create(
@@ -85,16 +88,7 @@ export class PropuestasParticionService {
     return propuesta;
   }
 
-  /*
-  update(
-    id: number,
-    updatePropuestasParticionDto: UpdatePropuestasParticionDto,
-  ) {
-    return `This action updates a #${id} propuestasParticion`;
-  }
-    */
-
-  async rechazarPropuesta(
+  async rechazar(
     idPropuesta: number,
     userId: number,
     createPropuestasParticionDto: CreatePropuestasParticionDto,
@@ -114,6 +108,14 @@ export class PropuestasParticionService {
       ...propuestasParticion,
       estado: { id: 6 },
     });
+    const gasto = await this.gastosService.findOne(
+      propuestasParticion.gasto.id,
+    );
+    this.mailService.enviarNotificaciónRechazoParticion(
+      usuario.nombre,
+      propuestasParticion.usuario_creador.email,
+      gasto.titulo,
+    );
     return await this.create(
       createPropuestasParticionDto,
       propuestasParticion.gasto.id,
@@ -121,7 +123,7 @@ export class PropuestasParticionService {
     );
   }
 
-  async aprobarPropuesta(id: number, userId: number) {
+  async aprobar(id: number, userId: number) {
     const usuario = await this.usuariosService.findOne(userId);
     const propuestasParticion = await this.findOne(id);
     await this.verificarPropuestaAceptada(propuestasParticion.gasto.id);
@@ -140,7 +142,12 @@ export class PropuestasParticionService {
     const gasto = await this.gastosService.findOne(
       propuestasParticion.gasto.id,
     );
-    return await this.gastosService.aceptarParticion(gasto);
+    this.mailService.enviarNotificaciónAprobacionParticion(
+      usuario.nombre,
+      propuestasParticion.usuario_creador.email,
+      gasto.titulo,
+    );
+    return await this.gastosService.aprobarParticion(gasto);
   }
 
   async verificarPropuestaAceptada(gastoId: number) {
@@ -154,10 +161,4 @@ export class PropuestasParticionService {
       );
     }
   }
-
-  /*
-  remove(id: number) {
-    return `This action removes a #${id} propuestasParticion`;
-  }
-    */
 }

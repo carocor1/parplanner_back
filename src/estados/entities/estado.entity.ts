@@ -1,5 +1,5 @@
-import { Gasto } from 'src/gastos/entities/gasto.entity';
-import { PropuestasParticion } from 'src/propuestas_particion/entities/propuestas_particion.entity';
+import { Gasto } from '../../gastos/entities/gasto.entity';
+import { PropuestasParticion } from '../../propuestas_particion/entities/propuestas_particion.entity';
 import {
   PrimaryGeneratedColumn,
   Column,

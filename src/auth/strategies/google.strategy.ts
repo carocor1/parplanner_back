@@ -9,7 +9,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
       clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET'),
-      callbackURL: 'http://localhost:3000/parplanner/auth/google/callback',
+      callbackURL:
+        'http://rested-present-trout.ngrok-free.app/parplanner/auth/google/callback',
       scope: ['email', 'profile'],
     });
   }

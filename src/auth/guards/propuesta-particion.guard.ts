@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PropuestasParticionService } from 'src/propuestas_particion/propuestas_particion.service';
+import { PropuestasParticionService } from '../../propuestas_particion/propuestas_particion.service';
 
 @Injectable()
 export class PropuestaParticionGuard implements CanActivate {

@@ -1,4 +1,4 @@
-import { Hijo } from 'src/hijos/entities/hijo.entity';
+import { Hijo } from '../../hijos/entities/hijo.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -51,6 +51,12 @@ export class Usuario {
 
   @Column({ nullable: true })
   googleId: string;
+
+  @Column({ nullable: true })
+  codigoRecuperacion: string;
+
+  @Column({ nullable: true })
+  fechaExpiracionCodigo: Date;
 
   @ManyToOne(() => Hijo, (hijo) => hijo.progenitores)
   @JoinColumn({ name: 'hijo_id' })

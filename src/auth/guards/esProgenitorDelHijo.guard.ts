@@ -4,9 +4,9 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { Hijo } from 'src/hijos/entities/hijo.entity';
-import { HijosService } from 'src/hijos/hijos.service';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { Hijo } from '../../hijos/entities/hijo.entity';
+import { HijosService } from '../../hijos/hijos.service';
+import { UsuariosService } from '../../usuarios/usuarios.service';
 
 @Injectable()
 export class EsProgenitorDelHijoGuard implements CanActivate {

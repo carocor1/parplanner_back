@@ -1,0 +1,68 @@
+<!-- templates/aprobacion_particion.hbs -->
+
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333333;
+        font-size: 24px;
+      }
+      p {
+        color: #555555;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .highlight {
+        font-weight: bold;
+        color: #28a745; /* Verde para indicar aprobación */
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #888888;
+      }
+      .button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #28a745; /* Verde para coincidir con el tema de aprobación */
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <h1>¡Propuesta Aprobada!</h1>
+      <p>
+        <span class='highlight'>{{usuarioNombre}}</span>
+        ha aprobado tu propuesta de partición para el gasto
+        <span class='highlight'>{{gastoTitulo}}</span>.
+      </p>
+      <p>
+        La partición ha sido confirmada y está lista para ser implementada.
+        Accede a nuestra aplicación para ver los detalles del gasto pendiente de
+        pago.
+      </p>
+      <div class='footer'>
+        <p>Gracias por usar nuestra plataforma.</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -10,10 +10,10 @@ import { UpdateGastoDto } from './dto/update-gasto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Gasto } from './entities/gasto.entity';
 import { Repository } from 'typeorm';
-import { Categoria } from 'src/categorias/entities/categoria.entity';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
-import { HijosService } from 'src/hijos/hijos.service';
-import { PropuestasParticionService } from 'src/propuestas_particion/propuestas_particion.service';
+import { Categoria } from '../categorias/entities/categoria.entity';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { HijosService } from '../hijos/hijos.service';
+import { PropuestasParticionService } from '../propuestas_particion/propuestas_particion.service';
 
 @Injectable()
 export class GastosService {
@@ -125,7 +125,7 @@ export class GastosService {
     return await this.gastosRepository.softDelete(id);
   }
 
-  async aceptarParticion(gasto: Gasto) {
+  async aprobarParticion(gasto: Gasto) {
     return await this.gastosRepository.update(gasto.id, {
       estado: { id: 3 },
     });

@@ -1,4 +1,4 @@
-import { Gasto } from 'src/gastos/entities/gasto.entity';
+import { Gasto } from '../../gastos/entities/gasto.entity';
 import {
   Column,
   DeleteDateColumn,
