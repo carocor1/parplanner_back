@@ -70,14 +70,14 @@ export class PlanningService {
     const fechasCreador = this.calcularFechasDistribucion(
       createPlanningDto.fechaInicio,
       distribucionDias,
-      30,
+      730,
       true,
     );
 
     const fechasParticipe = this.calcularFechasDistribucion(
       fechaInicio,
       distribucionDias,
-      30,
+      730,
       false,
     );
 
@@ -132,13 +132,13 @@ export class PlanningService {
       const nuevasFechasCreador = this.calcularFechasDistribucion(
         new Date(),
         distribucionDias,
-        30,
+        730,
         true,
       );
       const nuevasFechasParticipe = this.calcularFechasDistribucion(
         new Date(),
         distribucionDias,
-        30,
+        730,
         false,
       );
 
@@ -197,13 +197,13 @@ export class PlanningService {
     const nuevasFechasCreador = this.calcularFechasDistribucion(
       new Date(fechaInicio),
       distribucionDias,
-      30,
+      730,
       true,
     );
     const nuevasFechasParticipe = this.calcularFechasDistribucion(
       new Date(fechaInicio),
       distribucionDias,
-      30,
+      730,
       false,
     );
 
