@@ -95,6 +95,53 @@ export class PlanningService {
     return await this.planningRepository.save(planning);
   }
 
+  async previsualizarPlanning(
+    createPlanningDto: CreatePlanningDto,
+    userId: number,
+  ) {
+    const tipoPlanning = await this.tipoPlanningRepository.findOneBy({
+      id: createPlanningDto.tipoPlanningId,
+    });
+    if (!tipoPlanning) {
+      throw new NotFoundException('Tipo Planning no encontrado');
+    }
+    const usuario_creador = await this.usuariosService.findOne(userId);
+    const hijoEnComun = await this.hijosService.findOne(
+      usuario_creador.hijo.id,
+    );
+    if (!hijoEnComun.progenitores || hijoEnComun.progenitores.length < 2) {
+      throw new NotFoundException(
+        'Progenitores no encontrados o falta vincular correctamente',
+      );
+    }
+    const progenitor_participe = hijoEnComun.progenitores.find(
+      (progenitor) => progenitor.id != usuario_creador.id,
+    );
+    if (!progenitor_participe) {
+      throw new NotFoundException('Progenitor partícipe no encontrado');
+    }
+    const { fechaInicio } = createPlanningDto;
+    const distribucionDias = tipoPlanning.distribucion;
+
+    const fechasCreador = this.calcularFechasDistribucion(
+      createPlanningDto.fechaInicio,
+      distribucionDias,
+      730,
+      true,
+    );
+
+    const fechasParticipe = this.calcularFechasDistribucion(
+      fechaInicio,
+      distribucionDias,
+      730,
+      false,
+    );
+    return {
+      fechasAsignadasCreador: fechasCreador.map((f) => f.fecha),
+      fechasAsignadasParticipe: fechasParticipe.map((f) => f.fecha),
+    };
+  }
+
   private calcularFechasDistribucion(
     fechaInicio: Date,
     distribucionDias: number[],

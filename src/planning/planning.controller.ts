@@ -28,6 +28,18 @@ export class PlanningController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('previsualizar')
+  async previsualizar(
+    @Body() createPlanningDto: CreatePlanningDto,
+    @Req() req,
+  ) {
+    return this.planningService.previsualizarPlanning(
+      createPlanningDto,
+      req.user.userId,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('ultimoPlanning')
   async obtenerUltimoPlanning(@Req() req) {
     return await this.planningService.obtenerUltimoPlanning(req.user.userId);
