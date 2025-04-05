@@ -1,24 +1,28 @@
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
 
-import { IsDateString, IsString, IsNumber, MinLength, IsBoolean, IsOptional } from "class-validator";
+import {
+  IsDateString,
+  IsString,
+  IsNumber,
+  MinLength,
+  IsBoolean,
+  IsOptional,
+} from 'class-validator';
 export class CreateEventoDto {
+  @IsString()
+  @MinLength(4)
+  nombre: string;
 
-    @IsString()
-    @MinLength(4)
-    nombre:string; 
+  @IsDateString()
+  diaEvento: Date;
 
-    @IsDateString()
-    diaEvento:string
-    
-    @IsString()
-    horaInicio:string; 
+  @IsString()
+  horaInicio: string;
 
-    @IsString()
-    horaFin:string; 
+  @IsString()
+  horaFin: string;
 
-    @IsBoolean()
-    @IsOptional()
-    alarmaCreador: boolean;
-    
-    
+  @IsBoolean()
+  @IsOptional()
+  alarmaCreador: boolean;
 }

@@ -5,7 +5,7 @@ import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { HijosService } from 'src/hijos/hijos.service';
 import { Evento } from './entities/evento.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
 
 @Injectable()
 export class EventosService {
@@ -92,10 +92,12 @@ export class EventosService {
         {
           usuario_creador: hijoEnComun.progenitores[0],
           usuario_participe: hijoEnComun.progenitores[1],
+          diaEvento: MoreThanOrEqual(new Date()),
         },
         {
           usuario_creador: hijoEnComun.progenitores[1],
           usuario_participe: hijoEnComun.progenitores[0],
+          diaEvento: MoreThanOrEqual(new Date()),
         },
       ],
       order: {

@@ -14,13 +14,13 @@ export class Evento {
   @Column()
   nombre: string;
 
-  @Column('date')
-  diaEvento: string;
+  @Column()
+  diaEvento: Date;
 
-  @Column('time')
+  @Column()
   horaInicio: string;
 
-  @Column('time')
+  @Column()
   horaFin: string;
 
   @Column()
