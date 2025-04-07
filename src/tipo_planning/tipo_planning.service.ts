@@ -18,8 +18,10 @@ export class TipoPlanningService {
     return this.tipoPlanningRepository.save(tipoDePlanning);
   }
 
-  async findAll() {
-    return this.tipoPlanningRepository.find();
+  async obtenerTipoPlanningPredeterminados() {
+    return this.tipoPlanningRepository.find({
+      where: { predeterminado: true },
+    });
   }
 
   async findOne(id: number) {

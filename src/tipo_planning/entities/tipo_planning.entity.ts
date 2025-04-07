@@ -1,20 +1,29 @@
-import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { Planning } from "src/planning/entities/planning.entity";
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
+import { Planning } from 'src/planning/entities/planning.entity';
 
 @Entity()
 export class TipoPlanning {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    nombre: string;
+  @Column()
+  nombre: string;
 
-    @Column("simple-array")
-    distribucion: number[];
+  @Column('simple-array')
+  distribucion: number[];
 
-    @OneToMany(() => Planning, (planning) => planning.tipoPlanning)
-    plannings: Planning[];
+  @OneToMany(() => Planning, (planning) => planning.tipoPlanning)
+  plannings: Planning[];
 
-    @DeleteDateColumn()
-    deletedAt: Date;
+  @Column({ default: false })
+  predeterminado: boolean;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

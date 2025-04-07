@@ -2,6 +2,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
   MinLength,
@@ -17,4 +18,7 @@ export class CreateTipoPlanningDto {
   @IsNumber({}, { each: true })
   @IsPositive({ each: true })
   distribucion: number[];
+
+  @IsOptional()
+  predeterminado: boolean;
 }

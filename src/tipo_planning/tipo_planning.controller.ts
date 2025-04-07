@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TipoPlanningService } from './tipo_planning.service';
 import { CreateTipoPlanningDto } from './dto/create-tipo_planning.dto';
 import { UpdateTipoPlanningDto } from './dto/update-tipo_planning.dto';
@@ -13,8 +21,8 @@ export class TipoPlanningController {
   }
 
   @Get()
-  findAll() {
-    return this.tipoPlanningService.findAll();
+  obtenerTipoPlanningPredeterminados() {
+    return this.tipoPlanningService.obtenerTipoPlanningPredeterminados();
   }
 
   @Get(':id')
@@ -23,12 +31,15 @@ export class TipoPlanningController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateTipoPlanningDto: UpdateTipoPlanningDto) {
+  update(
+    @Param('id') id: number,
+    @Body() updateTipoPlanningDto: UpdateTipoPlanningDto,
+  ) {
     return this.tipoPlanningService.update(id, updateTipoPlanningDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id:number) {
+  remove(@Param('id') id: number) {
     return this.tipoPlanningService.remove(id);
   }
 }
