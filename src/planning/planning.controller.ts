@@ -12,10 +12,10 @@ import { PlanningService } from './planning.service';
 import { CreatePlanningDto } from './dto/create-planning.dto';
 import { UpdatePlanningDto } from './dto/update-planning.dto';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { EsCreadorOParticipeGuardPlanning } from 'src/auth/guards/esCreadorOParticipePlanning.guard';
-import { EsCreadorGuardPlanning } from 'src/auth/guards/esCreadorPlanning.guard';
-import { EsParticipeGuardPlanning } from 'src/auth/guards/esParticipePlanning.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { EsCreadorOParticipeGuardPlanning } from '../auth/guards/esCreadorOParticipePlanning.guard';
+import { EsCreadorGuardPlanning } from '../auth/guards/esCreadorPlanning.guard';
+import { EsParticipeGuardPlanning } from '../auth/guards/esParticipePlanning.guard';
 
 @Controller('planning')
 export class PlanningController {

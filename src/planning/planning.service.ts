@@ -6,13 +6,13 @@ import {
 import { CreatePlanningDto } from './dto/create-planning.dto';
 import { UpdatePlanningDto } from './dto/update-planning.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HijosService } from 'src/hijos/hijos.service';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { HijosService } from '../hijos/hijos.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
 import { Repository } from 'typeorm';
 import { Planning } from './entities/planning.entity';
-import { TipoPlanning } from 'src/tipo_planning/entities/tipo_planning.entity';
+import { TipoPlanning } from '../tipo_planning/entities/tipo_planning.entity';
 import * as cron from 'node-cron';
-import { Estado } from 'src/estados/entities/estado.entity';
+import { Estado } from '../estados/entities/estado.entity';
 
 @Injectable()
 export class PlanningService {
@@ -33,7 +33,7 @@ export class PlanningService {
   }
 
   async create(createPlanningDto: CreatePlanningDto, userId: number) {
-    //AGREGAR VERIFICACIÓN POR SI EL PLANNING FUE APROBADO PERO YA VENCIO
+    
     const ultimoPlanning = await this.obtenerUltimoPlanning(userId);
     if (ultimoPlanning) {
       if (ultimoPlanning.estado.id === 7) {

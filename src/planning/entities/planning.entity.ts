@@ -1,4 +1,4 @@
-import { TipoPlanning } from 'src/tipo_planning/entities/tipo_planning.entity';
+import { TipoPlanning } from '../../tipo_planning/entities/tipo_planning.entity';
 import {
   Column,
   ManyToOne,
@@ -6,8 +6,8 @@ import {
   PrimaryGeneratedColumn,
   Entity,
 } from 'typeorm';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
-import { Estado } from 'src/estados/entities/estado.entity';
+import { Usuario } from '../../usuarios/entities/usuario.entity';
+import { Estado } from '../../estados/entities/estado.entity';
 
 @Entity()
 export class Planning {

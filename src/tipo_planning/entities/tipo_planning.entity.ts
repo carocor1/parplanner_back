@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
 } from 'typeorm';
-import { Planning } from 'src/planning/entities/planning.entity';
+import { Planning } from '../../planning/entities/planning.entity';
 
 @Entity()
 export class TipoPlanning {

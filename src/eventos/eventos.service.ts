@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEventoDto } from './dto/create-evento.dto';
 import { UpdateEventoDto } from './dto/update-evento.dto';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
-import { HijosService } from 'src/hijos/hijos.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
+import { HijosService } from '../hijos/hijos.service';
 import { Evento } from './entities/evento.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThanOrEqual, Repository } from 'typeorm';

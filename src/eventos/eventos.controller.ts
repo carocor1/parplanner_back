@@ -12,9 +12,9 @@ import {
 import { EventosService } from './eventos.service';
 import { CreateEventoDto } from './dto/create-evento.dto';
 import { UpdateEventoDto } from './dto/update-evento.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { EsCreadorOParticipeGuardEvento } from 'src/auth/guards/esCreadorOParticipeEvento.guard';
-import { EsCreadorGuardEvento } from 'src/auth/guards/esCreadorEvento.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { EsCreadorOParticipeGuardEvento } from '../auth/guards/esCreadorOParticipeEvento.guard';
+import { EsCreadorGuardEvento } from '../auth/guards/esCreadorEvento.guard';
 
 @Controller('eventos')
 export class EventosController {

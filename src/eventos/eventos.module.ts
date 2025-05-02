@@ -3,8 +3,8 @@ import { EventosService } from './eventos.service';
 import { EventosController } from './eventos.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Evento } from './entities/evento.entity';
-import { HijosModule } from 'src/hijos/hijos.module';
-import { UsuariosModule } from 'src/usuarios/usuarios.module';
+import { HijosModule } from '../hijos/hijos.module';
+import { UsuariosModule } from '../usuarios/usuarios.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Evento]), HijosModule, UsuariosModule],
