@@ -5,7 +5,7 @@ import { Planning } from './entities/planning.entity';
 import { TipoPlanning } from '../tipo_planning/entities/tipo_planning.entity';
 import { HijosService } from '../hijos/hijos.service';
 import { UsuariosService } from '../usuarios/usuarios.service';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 
 describe('PlanningService', () => {
   let service: PlanningService;
@@ -76,6 +76,4 @@ describe('PlanningService', () => {
       expect(result).toEqual(planning);
     });
   });
-  
-
 });

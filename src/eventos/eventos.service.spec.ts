@@ -37,7 +37,9 @@ describe('EventosService', () => {
     }).compile();
 
     service = module.get<EventosService>(EventosService);
-    eventoRepository = module.get<Repository<Evento>>(getRepositoryToken(Evento));
+    eventoRepository = module.get<Repository<Evento>>(
+      getRepositoryToken(Evento),
+    );
     usuariosService = module.get<UsuariosService>(UsuariosService);
     hijosService = module.get<HijosService>(HijosService);
   });
