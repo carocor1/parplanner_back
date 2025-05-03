@@ -175,4 +175,30 @@ export class PlanningController {
   async aprobarPlanning(@Param('id') id: number) {
     return await this.planningService.aprobarPlanning(id);
   }
+
+  @UseGuards(JwtAuthGuard, EsCreadorOParticipeGuardPlanning)
+  @Post('expirar/:id')
+  @ApiOperation({ summary: 'Expirar un planning aceptado' })
+  @ApiParam({ name: 'id', description: 'ID del planning', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Planning expirado y nuevo planning creado.',
+    type: Planning,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'El Planning no se encuentra en estado Aceptado.',
+  })
+  @ApiResponse({ status: 404, description: 'Planning no encontrado.' })
+  async expirarPlanning(
+    @Param('id') id: number,
+    @Req() req,
+    @Body() createPlanningDto: CreatePlanningDto,
+  ) {
+    return await this.planningService.expirarPlanning(
+      id,
+      req.user.userId,
+      createPlanningDto,
+    );
+  }
 }

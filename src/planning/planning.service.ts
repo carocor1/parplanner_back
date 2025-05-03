@@ -33,7 +33,6 @@ export class PlanningService {
   }
 
   async create(createPlanningDto: CreatePlanningDto, userId: number) {
-    
     const ultimoPlanning = await this.obtenerUltimoPlanning(userId);
     if (ultimoPlanning) {
       if (ultimoPlanning.estado.id === 7) {
@@ -325,6 +324,24 @@ export class PlanningService {
     await this.planningRepository.update(id, {
       ...planningARechazar,
       estado: { id: 9 },
+    });
+    return await this.create(createPlanningDto, userId);
+  }
+
+  async expirarPlanning(
+    id: number,
+    userId: number,
+    createPlanningDto: CreatePlanningDto,
+  ) {
+    const planningAExpirar = await this.findOne(id);
+    if (planningAExpirar.estado.id != 8) {
+      throw new BadRequestException(
+        'El Planning no se encuentra en estado Aceptado',
+      );
+    }
+    await this.planningRepository.update(id, {
+      ...planningAExpirar,
+      estado: { id: 12 },
     });
     return await this.create(createPlanningDto, userId);
   }
