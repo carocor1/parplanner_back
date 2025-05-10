@@ -14,7 +14,6 @@ export class CreateTipoPlanningDto {
   nombre: string;
 
   @IsArray()
-  @ArrayMinSize(2)
   @IsNumber({}, { each: true })
   @IsPositive({ each: true })
   distribucion: number[];
