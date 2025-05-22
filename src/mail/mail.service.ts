@@ -1,7 +1,5 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
-import { Gasto } from 'src/gastos/entities/gasto.entity';
-import { PropuestasParticion } from 'src/propuestas_particion/entities/propuestas_particion.entity';
 
 @Injectable()
 export class MailService {
