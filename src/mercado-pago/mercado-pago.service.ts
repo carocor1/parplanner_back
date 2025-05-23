@@ -50,7 +50,6 @@ export class MercadoPagoService {
         };
       }),
     );
-
     const preference = new Preference(this.client);
     const response = await preference.create({
       body: {
@@ -60,6 +59,8 @@ export class MercadoPagoService {
           failure: 'https://github.com/carocor1/parplanner_back',
           pending: 'https://github.com/carocor1/parplanner_back',
         },
+        notification_url:
+          'https://rested-present-trout.ngrok-free.app/parplanner/mercado-pago/webhook',
         auto_return: 'approved',
       },
     });
